@@ -28,108 +28,108 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Title
-st.title("📊 Fair Price Shop Data Analysis")
+st.title("Fair Price Shop Data Analysis")
 st.markdown("### Analyze and visualize Fair Price Shop transactions dynamically.")
 
 # File Upload
-st.sidebar.header("📂 Upload Dataset")
+st.sidebar.header("Upload Dataset")
 uploaded_file = st.sidebar.file_uploader("Choose a CSV file", type=["csv"])
 
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-    st.sidebar.success("✅ Dataset Loaded Successfully!")
+    st.sidebar.success("Dataset Loaded Successfully!")
 
     # Tabs
-    tabs = ["📌 Overview", "🏪 Top 10 Shops", "📍 Transactions by District", "📊 Commodity Distribution", "📌 Utilization Rate", "📈 Top 5 Districts", "🏪 Commodity by Shop"]
+    tabs = ["Overview", "Top 10 Shops", "Transactions by District", "Commodity Distribution", "Utilization Rate", "Top 5 Districts", "Commodity by Shop"]
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(tabs)
 
     # Overview Tab
     with tab1:
-        st.subheader("📌 Overview of FP Shop Data")
+        st.subheader("Overview of FP Shop Data")
         st.markdown("This section provides a *summary of the dataset*, including general statistics and insights.")
         st.write(df.describe())
 
     # Top 10 Shops by Total Amount
     with tab2:
-        st.subheader("🏪 Top 10 Shops by Total Amount")
+        st.subheader("Top 10 Shops by Total Amount")
         st.markdown("This graph shows the *top 10 shops based on total sales*, helping identify high-performing shops.")
         top_shops = df.groupby("shopNo")["totalAmount"].sum().nlargest(10)
         plt.figure(figsize=(12, 6))
         sns.barplot(x=top_shops.index, y=top_shops.values, palette="viridis")
         plt.xlabel("Shop Number")
         plt.ylabel("Total Amount")
-        plt.title("🏪 Top 10 Shops by Total Amount")
+        plt.title("Top 10 Shops by Total Amount")
         st.pyplot(plt)
 
     # Distribution of Transactions by District
     with tab3:
-        st.subheader("📍 Distribution of Transactions by District")
+        st.subheader("Distribution of Transactions by District")
         st.markdown("This graph shows the *distribution of transactions across districts*, highlighting areas with the highest transaction activity.")
         plt.figure(figsize=(12, 6))
         sns.histplot(df["distName"], bins=30, kde=True, color="blue")
         plt.xticks(rotation=90)
         plt.xlabel("District Name")
         plt.ylabel("Number of Transactions")
-        plt.title("📍 Transactions by District")
+        plt.title("Transactions by District")
         st.pyplot(plt)
 
     # Commodity Distribution
     with tab4:
-        st.subheader("📊 Commodity Distribution by District")
+        st.subheader("Commodity Distribution by District")
         st.markdown("This graph *illustrates how different commodities* are distributed across various districts.")
         district_data = df.groupby("distName")[['riceAfsc', 'riceFsc', 'riceAap', 'wheat', 'sugar', 'rgdal', 'kerosene', 'salt']].sum()
         fig, ax = plt.subplots(figsize=(12, 6))
         district_data.plot(kind='bar', stacked=True, ax=ax, colormap='viridis')
         ax.set_ylabel("Quantity Distributed")
-        ax.set_title("📊 Commodity Distribution by District")
+        ax.set_title("Commodity Distribution by District")
         st.pyplot(fig)
 
     # Utilization Rate
     with tab5:
-        st.subheader("📌 Ration Card Utilization Rate")
+        st.subheader("Ration Card Utilization Rate")
         st.markdown("This *heatmap shows the utilization rate* of ration cards in different districts, indicating active use of facilities.")
         df['utilization_rate'] = (df['noOfTrans'] / df['noOfRcs']) * 100
         utilization_pivot = df.pivot_table(values='utilization_rate', index='distName')
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.heatmap(utilization_pivot, cmap='coolwarm', annot=True, ax=ax)
-        ax.set_title("📌 Utilization Rate per District")
+        ax.set_title("Utilization Rate per District")
         st.pyplot(fig)
 
     # Top 5 Districts by Total Transactions
     with tab6:
-        st.subheader("📈 Top 5 Districts by Total Transactions")
+        st.subheader("Top 5 Districts by Total Transactions")
         st.markdown("This graph shows the *top 5 districts with the highest number of transactions*, highlighting areas with the most activity.")
         top_districts = df.groupby("distName")["noOfTrans"].sum().nlargest(5)
         plt.figure(figsize=(12, 6))
         sns.barplot(x=top_districts.index, y=top_districts.values, palette="magma")
         plt.xlabel("District Name")
         plt.ylabel("Total Transactions")
-        plt.title("📈 Top 5 Districts by Total Transactions")
+        plt.title("Top 5 Districts by Total Transactions")
         st.pyplot(plt)
 
     # Commodity Distribution by Shop
     with tab7:
-        st.subheader("🏪 Commodity Distribution by Shop")
+        st.subheader("Commodity Distribution by Shop")
         st.markdown("This graph shows the *distribution of commodities across shops*, providing insights into shop-level allocation.")
         shop_data = df.groupby("shopNo")[['riceAfsc', 'riceFsc', 'riceAap', 'wheat', 'sugar', 'rgdal', 'kerosene', 'salt']].sum().nlargest(10, columns=['riceAfsc'])
         fig, ax = plt.subplots(figsize=(12, 6))
         shop_data.plot(kind='bar', stacked=True, ax=ax, colormap='plasma')
         ax.set_ylabel("Quantity Distributed")
-        ax.set_title("🏪 Commodity Distribution by Shop")
+        ax.set_title("Commodity Distribution by Shop")
         st.pyplot(fig)
 
     # Machine Learning Section
     st.markdown("---")
-    st.markdown("## 🧠 Machine Learning Insights")
+    st.markdown("## Machine Learning Insights")
     st.markdown("This section provides advanced insights using machine learning models.")
 
     # ML Tabs
-    ml_tabs = ["🔍 Anomaly Detection", "📊 District Clustering", "📈 Resource Allocation Optimization"]
+    ml_tabs = ["Anomaly Detection", "District Clustering", "Resource Allocation Optimization"]
     tab8, tab9, tab10 = st.tabs(ml_tabs)
 
     # Anomaly Detection
     with tab8:
-        st.subheader("🔍 Anomaly Detection in Transactions")
+        st.subheader("Anomaly Detection in Transactions")
         st.markdown("This section identifies *unusual transaction patterns* that may indicate fraud or errors.")
 
         # Select features for anomaly detection
@@ -154,12 +154,12 @@ if uploaded_file is not None:
         # Visualize anomalies
         plt.figure(figsize=(12, 6))
         sns.scatterplot(x='noOfTrans', y='totalAmount', hue='anomaly', data=df, palette='coolwarm')
-        plt.title("🔍 Anomalies in Transactions")
+        plt.title("Anomalies in Transactions")
         st.pyplot(plt)
 
     # District Clustering
     with tab9:
-        st.subheader("📊 District Clustering")
+        st.subheader("District Clustering")
         st.markdown("This section groups districts into clusters based on transaction volume and resource allocation.")
 
         # Select features for clustering
@@ -195,12 +195,12 @@ if uploaded_file is not None:
         # Visualize clusters
         plt.figure(figsize=(12, 6))
         sns.scatterplot(x='noOfTrans', y='totalAmount', hue='cluster', data=df, palette='viridis')
-        plt.title("📊 District Clusters")
+        plt.title("District Clusters")
         st.pyplot(plt)
 
     # Resource Allocation Optimization
     with tab10:
-        st.subheader("📈 Resource Allocation Optimization")
+        st.subheader("Resource Allocation Optimization")
         st.markdown("This section predicts the optimal allocation of commodities based on demand patterns.")
 
         # Select features and target
@@ -235,7 +235,7 @@ if uploaded_file is not None:
         sns.lineplot(x='noOfTrans', y='pred_riceFsc', data=df, label='Predicted Rice (FSC)')
         plt.xlabel("Number of Transactions")
         plt.ylabel("Predicted Quantity")
-        plt.title("📈 Predicted Commodity Requirements")
+        plt.title("Predicted Commodity Requirements")
         st.pyplot(plt)
 
 else:
